@@ -1,5 +1,5 @@
-add_executable(example_test example.spec.c)
+add_executable(parse_test parse_test.c)
 
-target_link_libraries(example_test ${CRITERION_LIBRARIES})
+target_link_libraries(parse_test ${CRITERION_LIBRARIES})
 
-add_test (example_test example_test)
+add_test(parse_test parse_test)

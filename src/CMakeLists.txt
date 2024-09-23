@@ -1,1 +1,1 @@
-add_executable(cHTTP main.c)
+add_executable(cHTTP main.c parse_req.c)
