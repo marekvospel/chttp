@@ -12,7 +12,11 @@ struct parse_state {
   // 4 = body
   //*/
   uint_fast8_t parse_state;
+  // True if last line was CRLF, not reset if CRLFCR found
   bool last_newline;
+  // Only true if latest character is actually a \r
+  bool last_cr;
+  uint_fast32_t bodylen;
 };
 
 struct http_req {

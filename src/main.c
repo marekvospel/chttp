@@ -96,29 +96,29 @@ void handle_client(int clientfd) {
       goto cleanup_client;
     } else if (readlen == 0) {
       // TODO: possibly already parsed
-      if (pstate.parse_state >= 5) {
+      /*if (pstate.parse_state >= 4) {
+        pstate.request->body[pstate.parse_index] = '\0';
         break;
-      }
+      }*/
+      printf("What happened? %i", pstate.parse_state);
       goto cleanup_client;
     }
+    printf("'%s'\n", buf);
     parse_cycle(&pstate, (uint8_t *)&buf, readlen);
   }
 
-  char msg[16];
+  char msg[103];
 reply:
   printf("Method: %s\n", req.method);
   printf("Path: %s\n", req.path);
   printf("Body: %s\n", req.body);
 
-  strcpy((char *)&msg, "Hello world!\n");
+  strcpy((char *)&msg,
+         "HTTP/1.0 200 OK\r\nServer: cHTTP (Vospel)\r\nContent-Type: "
+         "text/html\r\nContent-Length: 11\r\n\r\nHello World!");
   write(clientfd, msg, sizeof(msg));
 
 cleanup_client:
-cleanup_client_body:
-  free(req.body);
-cleanup_client_path:
-  free(req.path);
-cleanup_client_method:
   free(req.method);
 cleanup_client_fd:
   close(clientfd);
