@@ -76,8 +76,8 @@ cleanup_server:
 void handle_client(int clientfd) {
   printf("Client: %i\n", clientfd);
 
-  struct parse_state pstate;
-  struct http_req req;
+  ParseState pstate;
+  HttpReq req;
 
   if (initialize_request(&req) < 0) {
     goto cleanup_client_fd;
@@ -116,7 +116,7 @@ reply:
   strcpy((char *)&msg,
          "HTTP/1.0 200 OK\r\nServer: cHTTP (Vospel)\r\nContent-Type: "
          "text/html\r\nContent-Length: 11\r\n\r\nHello World!");
-  write(clientfd, msg, sizeof(msg));
+  int _ = write(clientfd, msg, sizeof(msg));
 
 cleanup_client:
   free(req.method);

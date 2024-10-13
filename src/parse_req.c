@@ -5,15 +5,14 @@
 
 #include "../include/parse_req.h"
 
-void _set_state(struct parse_state *pstate, uint8_t next) {
+void _set_state(ParseState *pstate, uint8_t next) {
   pstate->parse_state = next;
   pstate->last_cr = false;
   pstate->last_newline = false;
   pstate->parse_index = 0;
 }
 
-void parse_cycle(struct parse_state *pstate, uint8_t *buf,
-                 uint_fast32_t bufsize) {
+void parse_cycle(ParseState *pstate, uint8_t *buf, uint_fast32_t bufsize) {
 
   for (int i = 0; i < bufsize; i += 1) {
 
@@ -97,7 +96,7 @@ void parse_cycle(struct parse_state *pstate, uint8_t *buf,
   }
 }
 
-int initialize_request(struct http_req *req) {
+int initialize_request(HttpReq *req) {
   char *mem =
       malloc(HTTP_METHOD_MAX_SIZE + HTTP_PATH_MAX_SIZE + HTTP_BODY_MAX_SIZE);
   if (mem == NULL) {
@@ -115,7 +114,7 @@ int initialize_request(struct http_req *req) {
   return 0;
 }
 
-void initialize_parse_state(struct parse_state *pstate, struct http_req *req) {
+void initialize_parse_state(ParseState *pstate, HttpReq *req) {
   pstate->request = req;
   pstate->bodylen = 0;
   _set_state(pstate, 0);

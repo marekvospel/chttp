@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void with_request(void (*fn)(struct parse_state *)) {
-  struct http_req req;
-  struct parse_state pstate;
+void with_request(void (*fn)(ParseState *)) {
+  HttpReq req;
+  ParseState pstate;
 
   cr_assert_eq(initialize_request(&req), 0);
   initialize_parse_state(&pstate, &req);
@@ -17,7 +17,7 @@ void with_request(void (*fn)(struct parse_state *)) {
   free(req.method);
 }
 
-void request_get(struct parse_state *pstate) {
+void request_get(ParseState *pstate) {
   uint8_t buf[] = "GET /abc/def HTTP/1.0\r\nAccept: */*\r\nContent-Type: "
                   "application/text\r\n\r\nzkouska123";
 
@@ -35,7 +35,7 @@ void request_get(struct parse_state *pstate) {
   // cr_assert(strcmp(pstate->request->body, "zkouska123") == 0);
 }
 
-void request_emptybody(struct parse_state *pstate) {
+void request_emptybody(ParseState *pstate) {
   uint8_t buf[] =
       "POST /index.html HTTP/1.0\r\nUser-Agent: "
       "C22\r\nX-Forwarded-For: 127.0.0.1\r\nHost: vospel.cz\r\n\r\n";
@@ -53,7 +53,7 @@ void request_emptybody(struct parse_state *pstate) {
   cr_assert(strcmp(pstate->request->body, "") == 0);
 }
 
-void multi_iter(struct parse_state *pstate) {
+void multi_iter(ParseState *pstate) {
   uint8_t buf[] = "GET /index.css HTTP/1.0\r\nA: B\r\nC: D\r\nE: false\r\nF: "
                   "true\r\n\r\n";
 
